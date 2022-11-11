@@ -1,0 +1,11 @@
+package pac1;
+
+public class StringCalculator {
+	
+	public int add(String userInput) {
+		
+		return 0;
+		
+	}
+
+}

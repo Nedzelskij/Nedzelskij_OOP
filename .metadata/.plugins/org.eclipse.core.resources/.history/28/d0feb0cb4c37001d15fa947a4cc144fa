@@ -1,0 +1,135 @@
+package pac1;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+public class StringCalculator {
+	
+	public int add(String userInput) {
+		
+		if(userInput.isEmpty()) return 0;
+		
+		int sum = 0;
+		List<Integer> negativeInteger = new ArrayList<>();
+		List<String> arrayWithoutDelimiters = new ArrayList<>();
+		String[] temporaryVariable = userInput.split("\\\\n");
+		String oneTwoChar = "";
+		
+		if(userInput.length() >= 2) {
+			oneTwoChar += userInput.substring(0, 2);
+		}
+		
+		arrayWithoutDelimiters = processingOfDelimiter(temporaryVariable, oneTwoChar);
+		
+	for(String result: arrayWithoutDelimiters) {
+		if(result.isEmpty()) {
+			System.out.println("Input is incorrect.");
+			return 0;
+		}
+		
+		try {
+			int number = Integer.parseInt(result);
+			if(number <= 1000) {
+				if(number >= 0) {
+					sum += number;
+				} else {
+					negativeInteger.add(number);
+				}
+			}
+		} 
+		catch(Exception e) {
+			System.out.println("Input is incorrect.");
+			return 0;
+		}	
+	}
+	
+	if(negativeInteger.size() != 0) {
+		System.out.println("Negative numbers are prohibited.");
+		System.out.println("The following numbers - "+ negativeInteger +" were not included in the final total.");
+	}
+	
+		return sum;
+	}
+	
+	
+	public List<String> processingOfDelimiter(String[] temporaryVariable, String oneTwoChar){
+		
+		List<String> temporaryList = new ArrayList<>();
+		int n; 
+		
+		if(oneTwoChar.equals("//")) {
+			if(temporaryVariable.length != 1) {
+				String delimiters = newDelimiters(temporaryVariable[0]);
+				delimiters += ","; 
+				//arrayWithoutDelimiters = temporaryVariable[1].split(delimiters);
+				for(int i = 1; i < temporaryVariable.length; i++) {
+					if(!"-".equals(temporaryVariable[i].charAt(0)) && !"-".equals(temporaryVariable[i].charAt(temporaryVariable[i].length() - 1))) {
+						try {
+							n = Integer.parseInt(String.valueOf(temporaryVariable[i].charAt(0)));
+							n = Integer.parseInt(String.valueOf(temporaryVariable[i].charAt(temporaryVariable[i].length() - 1)));
+						} catch(Exception e) {
+							return Arrays.asList("");
+						}
+					}
+					temporaryList.addAll(Arrays.asList(temporaryVariable[i].split(delimiters)));
+				}
+			} else {
+				System.out.println("Separators entered incorrectly.");
+				return Arrays.asList();
+			}
+		} else {
+			String delimiters = ","; 
+			for(int i = 0; i < temporaryVariable.length; i++) {
+				if(!"-".equals(temporaryVariable[i].charAt(0)) && !"-".equals(temporaryVariable[i].charAt(temporaryVariable[i].length() - 1))) {
+					try {
+						n = Integer.parseInt(String.valueOf(temporaryVariable[i].charAt(0)));
+						n = Integer.parseInt(String.valueOf(temporaryVariable[i].charAt(temporaryVariable[i].length() - 1)));
+					} catch(Exception e) {
+						return Arrays.asList("");
+					}
+				}
+				temporaryList.addAll(Arrays.asList(temporaryVariable[i].split(delimiters)));
+			}
+		}
+		return temporaryList;
+	}
+	
+	
+	public String newDelimiters(String rawDelimiters) {
+		
+		String rawDelimiters1 = rawDelimiters.substring(2, rawDelimiters.length());
+		String[] proceededDelimeters = rawDelimiters1.split("\\]|\\]\\[|\\[");
+		
+		sort(proceededDelimeters, proceededDelimeters.length);
+		
+		String finalDelimiters = "";
+		for(String entireDelimeter: proceededDelimeters) {
+			String[] partialDelimiter = entireDelimeter.split("");
+			for(String delimiter: partialDelimiter) {
+				finalDelimiters += "\\" + delimiter;
+			}
+			finalDelimiters += "|";
+		}
+	
+		return finalDelimiters;
+	}
+	
+	
+	public void sort(String[] myArray, int lenghtStr) {
+		
+	    for (int i=1; i<lenghtStr; i++)
+	    {
+	        String temporaryArray = myArray[i];
+	 
+	        // Insert s[j] at its correct position
+	        int j = i - 1;
+	        while (j >= 0 && temporaryArray.length() > myArray[j].length())
+	        {
+	        	myArray[j+1] = myArray[j];
+	            j--;
+	        }
+	        myArray[j+1] = temporaryArray;
+	    }
+	}
+}

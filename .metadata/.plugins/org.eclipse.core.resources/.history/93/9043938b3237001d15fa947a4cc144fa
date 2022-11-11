@@ -1,0 +1,88 @@
+package pac1;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class StringCalculator {
+	
+	public int add(String userInput) {
+		
+		int sum = 0;
+		List<Integer> negativeInteger = new ArrayList<>();
+		String[] arrayWithoutDelimiters = {};
+		String[] temporaryVariable = userInput.split("\\]\\\\n");
+		
+		if(temporaryVariable.length != 1) {
+			String delimiters = newDelimiters(temporaryVariable[0]);
+			delimiters += ",|\\\\n"; 
+			arrayWithoutDelimiters = temporaryVariable[1].split(delimiters);
+		} else {
+			String delimiters = ",|\\\\n"; 
+			arrayWithoutDelimiters = temporaryVariable[0].split(delimiters);
+		}
+		
+	for(String result: arrayWithoutDelimiters) {
+		if(result.isEmpty()) {
+			System.out.println("Input is incorrect.");
+			return 0;
+		}
+		
+		try {
+			int number = Integer.parseInt(result);
+			if(number >= 0) {
+				sum += number;
+			} else {
+				negativeInteger.add(number);
+			}
+		} 
+		catch(Exception e) {
+			System.out.println("Input is incorrect.");
+		}	
+	}
+	
+	if(negativeInteger.size() != 0) {
+		System.out.println("Negative numbers are prohibited.");
+		System.out.println("The following numbers - "+ negativeInteger +" were not included in the final total.");
+	}
+
+		return sum;
+	}
+	
+	
+	public String newDelimiters(String rawDelimiters) {
+		
+		String rawDelimiters1 = rawDelimiters.substring(3, rawDelimiters.length());
+		String[] proceededDelimeters = rawDelimiters.split("\\]\\[|\\/\\/\\[");
+		
+		sort(proceededDelimeters, proceededDelimeters.length);
+		
+		String finalDelimiters = "";
+		for(String entireDelimeter: proceededDelimeters) {
+			String[] partialDelimiter = entireDelimeter.split("");
+			for(String delimiter: partialDelimiter) {
+				finalDelimiters += "\\" + delimiter;
+			}
+			finalDelimiters += "|";
+		}
+	
+		return finalDelimiters;
+	}
+	
+	
+	public void sort(String[] myArray, int lenghtStr) {
+		
+	    for (int i=1 ;i<lenghtStr; i++)
+	    {
+	        String temporaryArray = myArray[i];
+	 
+	        // Insert s[j] at its correct position
+	        int j = i - 1;
+	        while (j >= 0 && temporaryArray.length() > myArray[j].length())
+	        {
+	        	myArray[j+1] = myArray[j];
+	            j--;
+	        }
+	        myArray[j+1] = temporaryArray;
+	    }
+	}
+}

@@ -1,0 +1,20 @@
+package pac1;
+
+import java.util.Scanner;
+
+public class Main {
+
+	public static void main(String[] args) {
+		
+		Scanner keyboard = new Scanner(System.in);
+		StringCalculator calculator = new StringCalculator();
+		
+		System.out.print("Enter a string: ");
+		String userInput = keyboard.nextLine();
+		
+		int result = calculator.add(userInput);
+		System.out.println("Sum = " + result);
+		
+		keyboard.close();
+	}
+}

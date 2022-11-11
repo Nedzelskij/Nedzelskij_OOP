@@ -1,0 +1,35 @@
+package pac1;
+
+import java.util.Scanner;
+
+public class Main {
+
+	public static void main(String[] args) {
+		/*Scanner keyboard = new Scanner(System.in);
+		System.out.print("Enter a string: ");
+		String star = keyboard.nextLine();
+		//String[] lines = str.split("\\r?\\n|\\r");
+		//String[] lines = str.split(System.lineSeparator());
+		//String[] lines = str.split("\\R");
+		//Pattern pattern = Pattern.compile("\\R");
+		//Stream<String> lines = pattern.splitAsStream("Line1\nLine2\nLine3");
+		
+		//String[] bob = str.split("");
+		String[] bob = str.split("\\\\n");
+		for(String s: bob) {
+			System.out.println(s);
+		}*/
+		
+		
+		Scanner keyboard = new Scanner(System.in);
+		StringCalculator calculator = new StringCalculator();
+		
+		System.out.print("Enter a string: ");
+		String userInput = keyboard.nextLine();
+		
+		int result = calculator.add(userInput);
+		System.out.println("Sum = " + result);
+		
+		keyboard.close();
+	}
+}

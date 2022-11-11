@@ -1,0 +1,29 @@
+package pac1;
+
+//import java.io.*;
+//import java.util.ArrayList;
+//import java.util.List;
+//import java.util.Arrays;
+
+public class StringCalculator {
+	
+	public int add(String userInput) {
+		
+		String[] temporaryVariable = userInput.split("]\n");
+		if(temporaryVariable.length != 1) {
+			String[] delimiters = newDelimiters(temporaryVariable[1]);
+		}
+		
+		
+		return 0;
+	}
+	
+	public String[] newDelimiters(String rawDelimiters) {
+		
+		String rawDelimiters1 = rawDelimiters.substring(3, rawDelimiters.length());
+		List<String> proceededDelimeters = new ArrayList<String>(Arrays.asList(rawDelimiters1.split("][")));
+		
+		return proceededDelimeters;
+	}
+
+}

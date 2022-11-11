@@ -1,0 +1,180 @@
+package pac1;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+public class StringCalculator {
+	
+	public int add(String userInput) {
+		
+		if(userInput.isEmpty()) return 0;
+		
+		int sum = 0;
+		List<Integer> negativeInteger = new ArrayList<>();
+		List<String> arrayWithoutDelimiters = new ArrayList<>();
+		// Розбиття за базовим роздільником \n
+		String[] temporaryVariable = userInput.split("\\\\n");
+		String oneTwoChar = "";
+		
+		// Виділяємо перші два символи в новий рядок
+		if(userInput.length() >= 2) {
+			oneTwoChar += userInput.substring(0, 2);
+		}
+		
+		// Розділяємо рядок за базовими та отриманими роздільниками
+		arrayWithoutDelimiters = processingOfDelimiter(temporaryVariable, oneTwoChar);
+		
+	for(String result: arrayWithoutDelimiters) {
+		// При введенні була допущена помилка
+		if(result.isEmpty()) {
+			System.out.println("Input is incorrect.");
+			return 0;
+		}
+		
+		try {
+			int number = Integer.parseInt(result);
+			// Визначення суми
+			if(number <= 1000) {
+				if(number >= 0) {
+					sum += number;
+				} else {
+					negativeInteger.add(number);
+				}
+			}
+		// Неможливо перетворити на число один з елементів розбиття	
+		} catch(Exception e) {
+			System.out.println("Input is incorrect.");
+			return 0;
+		}	
+	}
+	
+	// Були введені вд'ємні числа
+	if(negativeInteger.size() != 0) {
+		System.out.println("Negative numbers are prohibited.");
+		System.out.println("The following numbers - "+ negativeInteger +" were not included in the final total.");
+	}
+		return sum;
+	}
+	
+	
+	public List<String> processingOfDelimiter(String[] temporaryVariable, String oneTwoChar){
+		
+		List<String> temporaryList = new ArrayList<>();
+		int mistake; 
+		
+		// Введені додаткові роздільники
+		if(oneTwoChar.equals("//")) {
+			if(temporaryVariable.length != 1) {
+				
+				// Обробка додаткових роздільників та використання базових
+				String delimiters = newDelimiters(temporaryVariable[0]);
+				delimiters += "\\,";
+				
+				// Перевірка на вміст подвійних роздільників (,\n)
+				mistake = checkMistakes(temporaryVariable, 1);
+				if(mistake == 1) return Arrays.asList("");
+				
+				// Розбиття рядка введеого користувачем всіма роздільниками
+				for(int i = 1; i < temporaryVariable.length; i++) {
+					temporaryList.addAll(Arrays.asList(temporaryVariable[i].split(delimiters)));
+				}
+			} else {
+				System.out.println("Separators entered incorrectly.");
+				return Arrays.asList();
+			}
+		// Використовуються тільки базові роздільники
+		} else {
+			// Використання базових роздільників
+			String delimiters = "\\,"; 
+			
+			// Перевірка на вміст подвійних роздільників (,\n)
+			mistake = checkMistakes(temporaryVariable, 0);
+			if(mistake == 1) return Arrays.asList("");
+			
+			// Розбиття рядка введеого користувачем всіма роздільниками
+			for(int i = 0; i < temporaryVariable.length; i++) {
+				temporaryList.addAll(Arrays.asList(temporaryVariable[i].split(delimiters)));
+			}
+		}
+		return temporaryList;
+	}
+	
+	
+	public String newDelimiters(String rawDelimiters) {
+		
+		String rawDelimiters1 = "";
+		
+		// Видалення зовнішніх дужок
+		if(String.valueOf(rawDelimiters.charAt(rawDelimiters.length() - 1)).equals("]")) {
+			rawDelimiters1 += rawDelimiters.substring(3, rawDelimiters.length() - 1);
+		} else {
+			rawDelimiters1 += rawDelimiters.substring(2, rawDelimiters.length());
+		}
+		
+		// Розділення роздільників введених користувачем
+		String[] proceededDelimeters = rawDelimiters1.split("\\]\\[");
+		
+		// Сортування роздільників в порядку спадання
+		sort(proceededDelimeters, proceededDelimeters.length);
+		
+		// Формування кінцевого рядка роздільників введеного користувачем
+		String finalDelimiters = "";
+		for(String entireDelimeter: proceededDelimeters) {
+			String[] partialDelimiter = entireDelimeter.split("");
+			for(String delimiter: partialDelimiter) {
+				if(Character.isLetter(delimiter.charAt(5))) {
+					finalDelimiters += delimiter;
+				} else {
+					finalDelimiters += "\\" +  delimiter;
+				}
+			}
+			finalDelimiters += "|";
+		}
+	
+		return finalDelimiters;
+	}
+	
+	
+	public int checkMistakes(String[] temporaryVariable, int startItrration) {
+		
+		int n = 0;
+		
+		for(int i = startItrration; i < temporaryVariable.length; i++) {
+			// Перевірка на подвійний роздільник додатних чисел
+			if(!temporaryVariable[i].isEmpty() && !"-".equals(String.valueOf(temporaryVariable[i].charAt(0)))) {
+				try {
+					n = Integer.parseInt(String.valueOf(temporaryVariable[i].charAt(0)));
+					n = Integer.parseInt(String.valueOf(temporaryVariable[i].charAt(temporaryVariable[i].length() - 1)));
+				} catch(Exception e) {
+					return 1;
+				}
+			// Перевірка на подвійний роздільник від'ємних чисел
+			} else {
+				try {
+					n = Integer.parseInt(String.valueOf(temporaryVariable[i].charAt(temporaryVariable[i].length() - 1)));
+				} catch(Exception e) {
+					return 1;
+				}
+			}
+		}
+		return 0;
+	}
+	
+	
+	public void sort(String[] notSortedArray, int lenghtStr) {
+		
+	    for (int i=1; i<lenghtStr; i++) {
+	        String temporaryString = notSortedArray[i];
+	 
+	        int j = i - 1;
+	        
+	        while (j >= 0 && temporaryString.length() > notSortedArray[j].length()) {
+	        	notSortedArray[j+1] = notSortedArray[j];
+	            j--;
+	        }
+	        notSortedArray[j+1] = temporaryString;
+	    }
+	}
+	
+}	

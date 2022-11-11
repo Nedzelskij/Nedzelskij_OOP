@@ -1,0 +1,40 @@
+package pac1;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+public class Main {
+
+	public static void main(String[] args) {
+		
+		String str = "1*2**3\n4%'6";
+		//String[] bob = str.split("");
+		String[] bob = str.split("\\'\\%|\\*\\*|\\*|\\.|\\,|\n");
+		for(String s: bob) {
+			System.out.println(s);
+		}
+		List<Integer> negativeInteger = new ArrayList<>();
+		negativeInteger.add(5);
+		System.out.println(negativeInteger.size());
+		
+		
+		
+		/*Scanner keyboard = new Scanner(System.in);
+		StringCalculator calculator = new StringCalculator();
+		
+		System.out.println("Enter a string: ");
+		String userInput = keyboard.next();
+		
+		try {
+			int result = calculator.add(userInput);
+			System.out.println("Sum = " + result);
+		}
+		catch(Exception e) {
+			System.out.println("");
+		}
+		
+		keyboard.close();*/
+	}
+
+}
